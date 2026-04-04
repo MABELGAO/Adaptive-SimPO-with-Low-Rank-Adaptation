@@ -1,0 +1,63 @@
+model:
+  model_name_or_path: meta-llama/Meta-Llama-3-8B-Instruct
+  trust_remote_code: false
+  use_flash_attention_2: false
+  bnb_4bit_quant_type: nf4
+  bnb_4bit_use_double_quant: true
+  bnb_4bit_compute_dtype: bfloat16
+
+data:
+  use_hub_dataset: true
+  hub_dataset_name: HuggingFaceH4/ultrafeedback_binarized
+  hub_train_split: train_prefs
+  hub_eval_split: test_prefs
+  max_train_samples: 5000
+  max_eval_samples: null
+  shuffle_train: true
+  train_sample_seed: 42
+
+lora:
+  r: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+  target_modules:
+    - q_proj
+    - k_proj
+    - v_proj
+    - o_proj
+    - gate_proj
+    - up_proj
+    - down_proj
+  bias: none
+  task_type: CAUSAL_LM
+
+train:
+  output_dir: outputs/llama3_8b_instruct_dpo_qlora
+  num_train_epochs: 1
+  per_device_train_batch_size: 4
+  per_device_eval_batch_size: 1
+  gradient_accumulation_steps: 16
+  learning_rate: 5.0e-5
+  lr_scheduler_type: cosine
+  warmup_ratio: 0.1
+  weight_decay: 0.0
+  max_grad_norm: 1.0
+  logging_steps: 5
+  save_steps: 100
+  eval_steps: 100
+  evaluation_strategy: steps
+  save_strategy: steps
+  save_total_limit: 2
+  seed: 42
+  gradient_checkpointing: true
+  bf16: true
+  fp16: false
+  tf32: true
+  max_length: 2048
+  max_prompt_length: 1024
+  max_target_length: 1024
+  beta: 0.1
+  report_to:
+    - tensorboard
+  remove_unused_columns: false
+  resume_from_checkpoint: null

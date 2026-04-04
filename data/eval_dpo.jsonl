@@ -1,0 +1,2 @@
+{"prompt": "Explain why version control is useful for teams.", "chosen": "Version control tracks changes, enables collaboration through branching/merging, and makes it easy to review, revert, and audit code history.", "rejected": "Version control is only useful when one person writes all code alone."}
+{"prompt": "What is the purpose of unit tests?", "chosen": "Unit tests verify small code units behave as expected, catching regressions early and improving refactoring confidence.", "rejected": "Unit tests are only for performance benchmarking and not correctness."}
