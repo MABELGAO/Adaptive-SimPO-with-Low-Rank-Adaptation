@@ -8,13 +8,9 @@ model:
 
 data:
   use_hub_dataset: true
-  hub_dataset_name: HuggingFaceH4/ultrafeedback_binarized
-  hub_train_split: train_prefs
-  hub_eval_split: test_prefs
-  max_train_samples: 5000
-  max_eval_samples: null
-  shuffle_train: true
-  train_sample_seed: 42
+  hub_dataset_name: argilla/dpo-mix-7k
+  hub_train_split: train
+  hub_eval_split: test
 
 lora:
   r: 16

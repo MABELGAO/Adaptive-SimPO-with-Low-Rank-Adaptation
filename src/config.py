@@ -21,19 +21,15 @@ class ModelConfig:
 class DataConfig:
     # Hub dataset settings (takes priority when use_hub_dataset=True)
     use_hub_dataset: bool = True
-    hub_dataset_name: str = "HuggingFaceH4/ultrafeedback_binarized"
-    hub_train_split: str = "train_prefs"
-    hub_eval_split: str = "test_prefs"
+    hub_dataset_name: str = "argilla/dpo-mix-7k"
+    hub_train_split: str = "train"
+    hub_eval_split: str = "test"
     # Local file settings (used when use_hub_dataset=False)
     train_file: str = "data/train_dpo.jsonl"
     eval_file: str = "data/eval_dpo.jsonl"
     prompt_column: str = "prompt"
     chosen_column: str = "chosen"
     rejected_column: str = "rejected"
-    max_train_samples: Optional[int] = None
-    max_eval_samples: Optional[int] = None
-    shuffle_train: bool = True
-    train_sample_seed: int = 42
 
 
 @dataclass
