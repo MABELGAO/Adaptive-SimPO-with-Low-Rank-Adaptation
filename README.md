@@ -1,6 +1,6 @@
 # DPO + QLoRA — Llama-3-8B-Instruct
 
-Fine-tunes **`meta-llama/Meta-Llama-3-8B-Instruct`** with **DPO** and **QLoRA** (4-bit + LoRA) on [`HuggingFaceH4/ultrafeedback_binarized`](https://huggingface.co/datasets/HuggingFaceH4/ultrafeedback_binarized). Training metrics are logged via TensorBoard.
+Fine-tunes **`meta-llama/Meta-Llama-3-8B-Instruct`** with **DPO** and **QLoRA** (4-bit + LoRA) on [`argilla/dpo-mix-7k`](https://huggingface.co/datasets/argilla/dpo-mix-7k). Training metrics are logged via TensorBoard.
 
 ## Setup
 
@@ -13,7 +13,7 @@ pip install -r requirements.txt
 
 ## Dataset
 
-Uses `train_prefs` / `test_prefs` splits, loaded directly from the Hub. To use local JSONL files, set `data.use_hub_dataset: false` and point `data.train_file` / `data.eval_file` to files with `prompt`, `chosen`, `rejected` fields.
+Uses `train` / `test` splits, loaded directly from the Hub. To use local JSONL files, set `data.use_hub_dataset: false` and point `data.train_file` / `data.eval_file` to files with `prompt`, `chosen`, `rejected` fields.
 
 ## Training
 
