@@ -263,10 +263,6 @@ def main() -> None:
         prompt_col=cfg.data.prompt_column,
         chosen_col=cfg.data.chosen_column,
         rejected_col=cfg.data.rejected_column,
-        max_train_samples=cfg.data.max_train_samples,
-        max_eval_samples=cfg.data.max_eval_samples,
-        shuffle_train=cfg.data.shuffle_train,
-        train_sample_seed=cfg.data.train_sample_seed,
     )
 
     callbacks = [PeakGPUMemoryCallback(), TrainingTimeCallback()]
