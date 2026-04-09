@@ -26,6 +26,25 @@ python -m src.train_dpo --config configs/dpo_qlora_llama3_8b.yaml \
 
 Adapter weights are saved to `train.output_dir` (default: `outputs/llama3_8b_instruct_dpo_qlora`).
 
+## Inference
+
+Generate responses from the trained LoRA adapter. By default, the script reads prompts from AlpacaEval (`tatsu-lab/alpaca_eval`, config `alpaca_eval`, split `eval`).
+
+```bash
+bash scripts/infer_dpo.sh \
+  --adapter-path outputs/llama3_8b_instruct_dpo_qlora/checkpoint-421 \
+  --output-file outputs/inference/alpaca_eval_dpo_responses.jsonl
+```
+
+To run on a local JSONL prompt file instead:
+
+```bash
+python -m src.infer_dpo \
+  --adapter-path outputs/llama3_8b_instruct_dpo_qlora/checkpoint-421 \
+  --input-file data/my_prompts.jsonl \
+  --output-file outputs/inference/my_prompts_dpo_responses.jsonl
+```
+
 ## Monitoring
 
 ```bash
