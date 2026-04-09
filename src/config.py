@@ -76,8 +76,6 @@ class TrainConfig:
     fp16: bool = False
     tf32: bool = True
     max_length: int = 2048
-    max_prompt_length: int = 1024
-    max_target_length: int = 1024
     beta: float = 0.1
     report_to: List[str] = field(default_factory=lambda: ["tensorboard"])
     remove_unused_columns: bool = False

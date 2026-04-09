@@ -151,8 +151,6 @@ def _build_dpo_args(cfg: ProjectConfig) -> DPOConfig:
         "bf16": train.bf16,
         "fp16": train.fp16,
         "max_length": train.max_length,
-        "max_prompt_length": train.max_prompt_length,
-        "max_target_length": train.max_target_length,
         "beta": train.beta,
         "report_to": train.report_to,
         "remove_unused_columns": train.remove_unused_columns,

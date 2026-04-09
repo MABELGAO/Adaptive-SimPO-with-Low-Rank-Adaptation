@@ -15,13 +15,15 @@ pip install -r requirements.txt
 
 Uses `train` / `test` splits, loaded directly from the Hub. To use local JSONL files, set `data.use_hub_dataset: false` and point `data.train_file` / `data.eval_file` to files with `prompt`, `chosen`, `rejected` fields.
 
+
 ## Training
 
 ```bash
 bash scripts/train_llama3_instruct.sh
 # or with overrides:
-python -m src.train_dpo --config configs/dpo_qlora_llama3_8b.yaml \
-  --override train.learning_rate=1e-4
+python -m src.train_dpo \
+  --config configs/dpo_qlora_llama3_8b.yaml \
+  --override model.model_name_or_path=xxx
 ```
 
 Adapter weights are saved to `train.output_dir` (default: `outputs/llama3_8b_instruct_dpo_qlora`).

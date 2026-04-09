@@ -1,10 +1,53 @@
-accelerate>=0.30.0
-bitsandbytes>=0.43.1
-datasets>=2.19.0
-peft>=0.11.1
-pyyaml>=6.0.1
-scipy>=1.13.0
-sentencepiece>=0.2.0
-tensorboard>=2.14.0
-transformers>=4.42.0
-trl>=0.9.6
+# Core deep learning stack
+torch==2.5.1+cu121
+torchaudio==2.5.1+cu121
+torchvision==0.20.1+cu121
+triton==3.1.0
+
+# Hugging Face ecosystem
+transformers==4.45.2
+tokenizers==0.20.3
+huggingface_hub==0.36.2
+accelerate==1.13.0
+datasets==4.8.4
+trl==0.11.4
+peft==0.18.1
+safetensors==0.7.0
+
+# Quantization / efficient finetuning
+bitsandbytes==0.49.2
+
+# Data / scientific computing
+numpy==1.26.4
+pandas==3.0.2
+scipy==1.17.1
+pyarrow==23.0.1
+
+# Tokenizer / text processing
+sentencepiece==0.2.1
+regex==2026.4.4
+
+# Config / CLI / utilities
+PyYAML==6.0.3
+tyro==1.0.12
+typer==0.24.1
+tqdm==4.67.3
+psutil==7.2.2
+packaging==26.0
+
+# Logging / visualization
+tensorboard==2.20.0
+protobuf==7.34.1
+rich==14.3.3
+
+# Networking / downloads
+requests==2.33.1
+urllib3==2.6.3
+httpx==0.28.1
+
+# Optional but present in current environment
+filelock==3.25.2
+fsspec==2026.2.0
+multiprocess==0.70.19
+dill==0.4.1
+xxhash==3.6.0
