@@ -1,0 +1,38 @@
+{
+  "train/loss": {
+    "step": 420,
+    "value": 0.935699999332428
+  },
+  "eval/loss": {
+    "step": 400,
+    "value": 0.6020514965057373
+  },
+  "train/rewards/margins": {
+    "step": 420,
+    "value": 1.1009316444396973
+  },
+  "eval/rewards/margins": {
+    "step": 400,
+    "value": 1.8431023359298706
+  },
+  "train/rewards/accuracies": {
+    "step": 420,
+    "value": 0.6499999761581421
+  },
+  "eval/rewards/accuracies": {
+    "step": 400,
+    "value": 0.8253333568572998
+  },
+  "train/objective/gamma": {
+    "step": 420,
+    "value": 0.6434410214424133
+  },
+  "eval/objective/gamma": {
+    "step": 400,
+    "value": 0.642378568649292
+  },
+  "train_runtime_s": 3974.3324,
+  "train_loss_final": 0.8150012562507122,
+  "train_steps_per_second": 0.106,
+  "peak_gpu_memory_gb": 13.9383
+}
