@@ -11,6 +11,8 @@ data:
   hub_dataset_name: argilla/dpo-mix-7k
   hub_train_split: train
   hub_eval_split: test
+  chosen_score_column: chosen_rating
+  rejected_score_column: rejected_rating
 
 lora:
   r: 16
@@ -55,3 +57,11 @@ train:
     - tensorboard
   remove_unused_columns: false
   resume_from_checkpoint: null
+
+simpo:
+  gamma_base: 0.5
+  gamma_max: 1.0
+  margin_slope: 10.0
+  margin_offset: 0.5
+  fallback_chosen_score: 1.0
+  fallback_rejected_score: 0.0

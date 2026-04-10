@@ -30,6 +30,8 @@ class DataConfig:
     prompt_column: str = "prompt"
     chosen_column: str = "chosen"
     rejected_column: str = "rejected"
+    chosen_score_column: Optional[str] = "chosen_rating"
+    rejected_score_column: Optional[str] = "rejected_rating"
 
 
 @dataclass
@@ -83,11 +85,22 @@ class TrainConfig:
 
 
 @dataclass
+class SimPOConfig:
+    gamma_base: float = 0.5
+    gamma_max: float = 1.0
+    margin_slope: float = 10.0
+    margin_offset: float = 0.5
+    fallback_chosen_score: float = 1.0
+    fallback_rejected_score: float = 0.0
+
+
+@dataclass
 class ProjectConfig:
     model: ModelConfig = field(default_factory=ModelConfig)
     data: DataConfig = field(default_factory=DataConfig)
     lora: LoraArguments = field(default_factory=LoraArguments)
     train: TrainConfig = field(default_factory=TrainConfig)
+    simpo: SimPOConfig = field(default_factory=SimPOConfig)
 
 
 def _parse_scalar(value: str) -> Any:
@@ -140,4 +153,5 @@ def load_project_config(config_path: str, overrides: Optional[List[str]] = None)
     data = DataConfig(**raw.get("data", {}))
     lora = LoraArguments(**raw.get("lora", {}))
     train = TrainConfig(**raw.get("train", {}))
-    return ProjectConfig(model=model, data=data, lora=lora, train=train)
+    simpo = SimPOConfig(**raw.get("simpo", {}))
+    return ProjectConfig(model=model, data=data, lora=lora, train=train, simpo=simpo)
