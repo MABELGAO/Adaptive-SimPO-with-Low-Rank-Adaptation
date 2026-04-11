@@ -10,7 +10,7 @@ data:
   use_hub_dataset: true
   hub_dataset_name: argilla/dpo-mix-7k
   hub_train_split: train
-  test_size: 0.1  # 对应代码中的 dataset.train_test_split(test_size=0.1)
+  test_size: 0.1
 
 lora:
   r: 16
