@@ -42,7 +42,7 @@ huggingface-cli login
 Run the script directly. It will automatically handle directory creation, dataset mapping, tuning, and formal training.
 
 ```Bash
-python run_simpo_llama3_v2.py
+python run_simpo_llama3.py
 ```
 
 ## Potential Issues & Troubleshooting
