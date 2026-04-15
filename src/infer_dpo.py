@@ -184,7 +184,22 @@ def build_messages(prompt: str) -> list[dict[str, str]]:
     return [{"role": "user", "content": prompt}]
 
 
-def prepare_batch(tokenizer, prompts: list[str], device: torch.device) -> tuple[dict[str, torch.Tensor], torch.Tensor]:
+def extract_clean_response(decoded_text: str) -> str:
+    text = decoded_text.strip()
+
+    assistant_marker = "assistant\n\n"
+    lower_text = text.lower()
+    marker_idx = lower_text.rfind(assistant_marker)
+    if marker_idx != -1:
+        text = text[marker_idx + len(assistant_marker) :].strip()
+
+    if text.lower().startswith("assistant"):
+        text = text[len("assistant") :].lstrip(" \n:：-").strip()
+
+    return text
+
+
+def prepare_batch(tokenizer, prompts: list[str], device: torch.device) -> tuple[dict[str, torch.Tensor], int]:
     rendered_prompts = [
         tokenizer.apply_chat_template(
             build_messages(prompt),
@@ -199,9 +214,9 @@ def prepare_batch(tokenizer, prompts: list[str], device: torch.device) -> tuple[
         padding=True,
         truncation=True,
     )
-    input_lengths = batch["attention_mask"].sum(dim=1)
+    prompt_length = batch["input_ids"].shape[1]
     batch = {k: v.to(device) for k, v in batch.items()}
-    return batch, input_lengths
+    return batch, prompt_length
 
 
 def generate_responses(
@@ -228,14 +243,16 @@ def generate_responses(
     for start in range(0, len(records), args.batch_size):
         batch_records = records[start : start + args.batch_size]
         prompts = [row["prompt"] for row in batch_records]
-        model_inputs, input_lengths = prepare_batch(tokenizer, prompts, device)
+        model_inputs, prompt_length = prepare_batch(tokenizer, prompts, device)
 
         with torch.inference_mode():
             generated = model.generate(**model_inputs, **generation_kwargs)
 
-        for row, output_ids, input_len in zip(batch_records, generated, input_lengths.tolist()):
-            new_tokens = output_ids[int(input_len) :]
-            response = tokenizer.decode(new_tokens, skip_special_tokens=True).strip()
+        for row, output_ids in zip(batch_records, generated):
+            new_tokens = output_ids[prompt_length:]
+            response = extract_clean_response(
+                tokenizer.decode(new_tokens, skip_special_tokens=True)
+            )
             output_rows.append(
                 {
                     "id": row["id"],
