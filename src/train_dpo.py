@@ -105,6 +105,10 @@ class AdaptiveMarginSimPOTrainer(DPOTrainer):
             tokenized["chosen_score"] = features["chosen_score"]
         if "rejected_score" in features:
             tokenized["rejected_score"] = features["rejected_score"]
+        if "ref_chosen_logp" in features:
+            tokenized["ref_chosen_logp"] = features["ref_chosen_logp"]
+        if "ref_rejected_logp" in features:
+            tokenized["ref_rejected_logp"] = features["ref_rejected_logp"]
         return tokenized
 
     @staticmethod
@@ -150,6 +154,32 @@ class AdaptiveMarginSimPOTrainer(DPOTrainer):
                 processed.append(fallback)
             else:
                 processed.append(float(value))
+        return torch.tensor(processed, device=device, dtype=torch.float32)
+
+    @staticmethod
+    def _optional_values_to_tensor(values, batch_size: int, device: torch.device) -> torch.Tensor | None:
+        if values is None:
+            return None
+
+        if torch.is_tensor(values):
+            tensor = values.to(device=device, dtype=torch.float32)
+            if tensor.ndim == 0:
+                tensor = tensor.repeat(batch_size)
+            if not torch.isfinite(tensor).any():
+                return None
+            return tensor
+
+        processed = []
+        has_any_finite = False
+        for value in values:
+            if value is None or (isinstance(value, str) and not value.strip()):
+                processed.append(float("nan"))
+            else:
+                numeric_value = float(value)
+                processed.append(numeric_value)
+                has_any_finite = True
+        if not has_any_finite:
+            return None
         return torch.tensor(processed, device=device, dtype=torch.float32)
 
     def _compute_adaptive_gamma(
@@ -198,6 +228,16 @@ class AdaptiveMarginSimPOTrainer(DPOTrainer):
             device=device,
             fallback=self.fallback_rejected_score,
         )
+        ref_chosen_logps = self._optional_values_to_tensor(
+            batch.get("ref_chosen_logp"),
+            batch_size=batch_size,
+            device=device,
+        )
+        ref_rejected_logps = self._optional_values_to_tensor(
+            batch.get("ref_rejected_logp"),
+            batch_size=batch_size,
+            device=device,
+        )
         adaptive_gamma, normalized_gap, raw_gap = self._compute_adaptive_gamma(chosen_scores, rejected_scores)
 
         reward_margins = chosen_rewards - rejected_rewards
@@ -222,6 +262,18 @@ class AdaptiveMarginSimPOTrainer(DPOTrainer):
             f"{prefix}objective/score_gap": normalized_gap.detach().mean().item(),
             f"{prefix}objective/raw_score_gap": raw_gap.detach().mean().item(),
         }
+
+        if ref_chosen_logps is not None and ref_rejected_logps is not None:
+            valid_mask = torch.isfinite(ref_chosen_logps) & torch.isfinite(ref_rejected_logps)
+            if valid_mask.any():
+                chosen_kl_seq = policy_chosen_logps[valid_mask] - ref_chosen_logps[valid_mask]
+                rejected_kl_seq = policy_rejected_logps[valid_mask] - ref_rejected_logps[valid_mask]
+                chosen_kl_token = chosen_kl_seq / chosen_len[valid_mask]
+                rejected_kl_token = rejected_kl_seq / rejected_len[valid_mask]
+
+                metrics[f"{prefix}objective/kl"] = torch.cat((chosen_kl_token, rejected_kl_token)).detach().mean().item()
+                metrics[f"{prefix}objective/kl_token"] = metrics[f"{prefix}objective/kl"]
+                metrics[f"{prefix}objective/kl_seq"] = torch.cat((chosen_kl_seq, rejected_kl_seq)).detach().mean().item()
 
         return losses.mean(), metrics
 
@@ -397,6 +449,8 @@ def main() -> None:
         rejected_col=cfg.data.rejected_column,
         chosen_score_col=cfg.data.chosen_score_column,
         rejected_score_col=cfg.data.rejected_score_column,
+        ref_chosen_logp_col=cfg.data.ref_chosen_logp_column,
+        ref_rejected_logp_col=cfg.data.ref_rejected_logp_column,
     )
     score_gap_max = _compute_score_gap_max(
         train_dataset,

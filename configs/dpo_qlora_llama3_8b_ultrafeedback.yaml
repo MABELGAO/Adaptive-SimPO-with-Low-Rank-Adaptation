@@ -8,13 +8,13 @@ model:
 
 data:
   use_hub_dataset: true
-  hub_dataset_name: argilla/dpo-mix-7k
-  hub_train_split: train
-  hub_eval_split: test
-  chosen_score_column: chosen_rating
-  rejected_score_column: rejected_rating
-  ref_chosen_logp_column: ref_chosen_logp
-  ref_rejected_logp_column: ref_rejected_logp
+  hub_dataset_name: HuggingFaceH4/ultrafeedback_binarized
+  hub_train_split: train_prefs
+  hub_eval_split: test_prefs
+  max_train_samples: 5000
+  max_eval_samples: null
+  shuffle_train: true
+  train_sample_seed: 42
 
 lora:
   r: 16
@@ -34,7 +34,7 @@ lora:
 train:
   output_dir: outputs/llama3_8b_instruct_dpo_qlora
   num_train_epochs: 1
-  per_device_train_batch_size: 1
+  per_device_train_batch_size: 4
   per_device_eval_batch_size: 1
   gradient_accumulation_steps: 16
   learning_rate: 1.0e-6
@@ -54,16 +54,10 @@ train:
   fp16: false
   tf32: true
   max_length: 2048
+  max_prompt_length: 1024
+  max_target_length: 1024
   beta: 0.1
   report_to:
     - tensorboard
   remove_unused_columns: false
   resume_from_checkpoint: null
-
-simpo:
-  gamma_base: 0.5
-  gamma_max: 1.0
-  margin_slope: 10.0
-  margin_offset: 0.5
-  fallback_chosen_score: 1.0
-  fallback_rejected_score: 0.0

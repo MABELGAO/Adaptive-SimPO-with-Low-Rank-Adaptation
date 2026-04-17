@@ -283,6 +283,10 @@ def _write_summary(output_dir: Path, event_scalars: dict[str, list[tuple[float, 
         "eval/rewards/margins",
         "train/rewards/accuracies",
         "eval/rewards/accuracies",
+        "train/objective/kl",
+        "eval/objective/kl",
+        "train/objective/kl_seq",
+        "eval/objective/kl_seq",
         "train/objective/gamma",
         "eval/objective/gamma",
     ):
@@ -369,6 +373,25 @@ def export_plots(event_file: Path, log_file: Path | None, output_dir: Path) -> N
         note="The dynamic SimPO margin is driven by the normalized chosen/rejected rating gap from the preference dataset.",
     )
     gamma_image.save(output_dir / "adaptive_margin_metrics.png")
+
+    if "train/objective/kl" in event_scalars and "eval/objective/kl" in event_scalars:
+        kl_image = _make_two_panel_image(
+            "Reference KL Metrics",
+            "Token-Normalized KL",
+            "KL",
+            [
+                {"label": "Train KL", "color": "#4338CA", "points": event_scalars["train/objective/kl"]},
+                {"label": "Eval KL", "color": "#D97706", "points": event_scalars["eval/objective/kl"], "radius": 5},
+            ],
+            "Sequence-Level KL",
+            "KL",
+            [
+                {"label": "Train KL (Seq)", "color": "#0F766E", "points": event_scalars.get("train/objective/kl_seq", [])},
+                {"label": "Eval KL (Seq)", "color": "#B91C1C", "points": event_scalars.get("eval/objective/kl_seq", []), "radius": 5},
+            ],
+            note="These curves are available when the dataset provides precomputed reference log-probs.",
+        )
+        kl_image.save(output_dir / "kl_metrics.png")
 
     train_steps = [step for step, _ in event_scalars["train/loss"]]
     resource_series = _extract_resource_series(log_entries, train_steps)

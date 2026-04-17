@@ -31,6 +31,8 @@ def _standardize(
     rejected_col: str,
     chosen_score_col: str | None,
     rejected_score_col: str | None,
+    ref_chosen_logp_col: str | None,
+    ref_rejected_logp_col: str | None,
 ) -> dict:
     return {
         "prompt": str(record[prompt_col]).strip(),
@@ -38,6 +40,8 @@ def _standardize(
         "rejected": str(record[rejected_col]).strip(),
         "chosen_score": _to_optional_float(record.get(chosen_score_col)) if chosen_score_col else None,
         "rejected_score": _to_optional_float(record.get(rejected_score_col)) if rejected_score_col else None,
+        "ref_chosen_logp": _to_optional_float(record.get(ref_chosen_logp_col)) if ref_chosen_logp_col else None,
+        "ref_rejected_logp": _to_optional_float(record.get(ref_rejected_logp_col)) if ref_rejected_logp_col else None,
     }
 
 
@@ -77,6 +81,8 @@ def _extract_dpo_mix(record: dict) -> dict:
         "rejected": rejected,
         "chosen_score": _to_optional_float(record.get("chosen_rating")),
         "rejected_score": _to_optional_float(record.get("rejected_rating")),
+        "ref_chosen_logp": _to_optional_float(record.get("ref_chosen_logp")),
+        "ref_rejected_logp": _to_optional_float(record.get("ref_rejected_logp")),
     }
 
 
@@ -92,6 +98,8 @@ def load_dpo_datasets(
     rejected_col: str = "rejected",
     chosen_score_col: str | None = "chosen_rating",
     rejected_score_col: str | None = "rejected_rating",
+    ref_chosen_logp_col: str | None = "ref_chosen_logp",
+    ref_rejected_logp_col: str | None = "ref_rejected_logp",
 ) -> Tuple[Dataset, Dataset]:
     if use_hub_dataset:
         train_ds = load_dataset(hub_dataset_name, split=hub_train_split)
@@ -128,6 +136,8 @@ def load_dpo_datasets(
                 "rejected_col": rejected_col,
                 "chosen_score_col": chosen_score_col,
                 "rejected_score_col": rejected_score_col,
+                "ref_chosen_logp_col": ref_chosen_logp_col,
+                "ref_rejected_logp_col": ref_rejected_logp_col,
             },
             remove_columns=train_ds.column_names,
             desc="Standardizing train records",
@@ -140,6 +150,8 @@ def load_dpo_datasets(
                 "rejected_col": rejected_col,
                 "chosen_score_col": chosen_score_col,
                 "rejected_score_col": rejected_score_col,
+                "ref_chosen_logp_col": ref_chosen_logp_col,
+                "ref_rejected_logp_col": ref_rejected_logp_col,
             },
             remove_columns=eval_ds.column_names,
             desc="Standardizing eval records",

@@ -27,11 +27,32 @@ To switch to local JSONL files, set `data.use_hub_dataset: false` and point `dat
 
 - `data.chosen_score_column`
 - `data.rejected_score_column`
+- `data.ref_chosen_logp_column`
+- `data.ref_rejected_logp_column`
 
 If a dataset does not provide scores, the trainer falls back to:
 
 - `simpo.fallback_chosen_score`
 - `simpo.fallback_rejected_score`
+
+If you want KL curves without loading a live reference model during training, precompute reference sequence log-probs into local JSONL files first:
+
+```bash
+python scripts/precompute_ref_logps.py \
+  --input-file data/train_dpo.jsonl \
+  --output-file data/train_dpo_with_ref.jsonl \
+  --model-name-or-path meta-llama/Meta-Llama-3-8B-Instruct \
+  --load-in-4bit
+```
+
+The script adds `ref_chosen_logp` and `ref_rejected_logp`, which the trainer will log as:
+
+- `train/objective/kl`
+- `train/objective/kl_token`
+- `train/objective/kl_seq`
+- `eval/objective/kl`
+- `eval/objective/kl_token`
+- `eval/objective/kl_seq`
 
 ## Training
 
@@ -85,6 +106,7 @@ Key training metrics logged by the current trainer:
 - `train/rewards/margins`, `eval/rewards/margins`
 - `train/rewards/accuracies`, `eval/rewards/accuracies`
 - `train/response_lengths/*`, `eval/response_lengths/*`
+- `train/objective/kl*`, `eval/objective/kl*` when precomputed reference log-probs are present
 - `train/objective/gamma`, `eval/objective/gamma`
 - `train/objective/score_gap`, `eval/objective/score_gap`
 

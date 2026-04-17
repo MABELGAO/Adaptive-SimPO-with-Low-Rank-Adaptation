@@ -32,6 +32,8 @@ class DataConfig:
     rejected_column: str = "rejected"
     chosen_score_column: Optional[str] = "chosen_rating"
     rejected_score_column: Optional[str] = "rejected_rating"
+    ref_chosen_logp_column: Optional[str] = "ref_chosen_logp"
+    ref_rejected_logp_column: Optional[str] = "ref_rejected_logp"
 
 
 @dataclass
@@ -61,7 +63,7 @@ class TrainConfig:
     per_device_train_batch_size: int = 1
     per_device_eval_batch_size: int = 1
     gradient_accumulation_steps: int = 16
-    learning_rate: float = 5e-5
+    learning_rate: float = 1e-6
     lr_scheduler_type: str = "cosine"
     warmup_ratio: float = 0.1
     weight_decay: float = 0.0
