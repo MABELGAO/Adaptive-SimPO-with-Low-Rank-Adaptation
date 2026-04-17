@@ -92,6 +92,16 @@ python -m src.infer_dpo \
   --output-file outputs/inference/my_prompts_dpo_responses.jsonl
 ```
 
+To run batched inference with `vLLM` instead:
+
+```bash
+bash scripts/infer_vllm.sh \
+  --adapter-path outputs/llama3_8b_instruct_dpo_qlora/checkpoint-421 \
+  --output-file outputs/inference/alpaca_eval_vllm_responses.jsonl
+```
+
+This uses the same default AlpacaEval prompt set as `src.infer_dpo`, but serves generation through `vLLM` with LoRA enabled for higher-throughput batch inference.
+
 ## Monitoring
 
 TensorBoard works out of the box:
