@@ -1,0 +1,54 @@
+{
+  "train/loss": {
+    "step": 420,
+    "value": 1.0884000062942505
+  },
+  "eval/loss": {
+    "step": 400,
+    "value": 1.0705513954162598
+  },
+  "train/rewards/margins": {
+    "step": 420,
+    "value": -0.011630041524767876
+  },
+  "eval/rewards/margins": {
+    "step": 400,
+    "value": 0.010411842726171017
+  },
+  "train/rewards/accuracies": {
+    "step": 420,
+    "value": 0.612500011920929
+  },
+  "eval/rewards/accuracies": {
+    "step": 400,
+    "value": 0.5440000295639038
+  },
+  "train/objective/kl": {
+    "step": 420,
+    "value": 0.023373981937766075
+  },
+  "eval/objective/kl": {
+    "step": 400,
+    "value": -0.04869306832551956
+  },
+  "train/objective/kl_seq": {
+    "step": 420,
+    "value": -1.9184353351593018
+  },
+  "eval/objective/kl_seq": {
+    "step": 400,
+    "value": -3.4576213359832764
+  },
+  "train/objective/gamma": {
+    "step": 420,
+    "value": 0.6434410214424133
+  },
+  "eval/objective/gamma": {
+    "step": 400,
+    "value": 0.642378568649292
+  },
+  "train_runtime_s": 3937.7585,
+  "train_loss_final": 1.0780486681115882,
+  "train_steps_per_second": 0.107,
+  "peak_gpu_memory_gb": 13.9383
+}

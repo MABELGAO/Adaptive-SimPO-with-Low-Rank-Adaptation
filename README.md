@@ -125,7 +125,7 @@ To export static PNG plots from a local TensorBoard event file:
 ```bash
 python scripts/export_training_plots.py \
   --event-file artifacts/training_metrics/<run>/events.out.tfevents... \
-  --log-file artifacts/training_metrics/<run>/simpo_train_local.log \
+  --log-file artifacts/training_metrics/<run>/simpo_pipeline.log \
   --output-dir artifacts/training_metrics/<run>/plots
 ```
 
@@ -143,35 +143,38 @@ python scripts/export_training_plots.py \
 
 The latest captured run artifacts are stored in:
 
-- `artifacts/training_metrics/2026-04-11-llama3_8b_instruct_dpo_qlora/`
-- `artifacts/training_metrics/2026-04-11-llama3_8b_instruct_dpo_qlora/plots/`
+- `artifacts/training_metrics/2026-04-17-argilla_dpo_mix_simpo_kl/`
+- `artifacts/training_metrics/2026-04-17-argilla_dpo_mix_simpo_kl/plots/`
 
 Summary of that run:
 
 | Metric | Value |
 |---|---|
-| Runtime | `3974.3s` (`66.24 min`) |
-| Final train loss | `0.8150` |
-| Final eval loss | `0.6021` |
-| Final eval reward margin | `1.8431` |
-| Final eval reward accuracy | `0.8253` |
+| Runtime | `3937.76s` (`65.63 min`) |
+| Final train loss | `1.0780` |
+| Final eval loss | `1.0706` |
+| Final eval reward margin | `0.0104` |
+| Final eval reward accuracy | `0.5440` |
 | Final eval adaptive gamma | `0.6424` |
+| Final eval KL (token-normalized) | `-0.0487` |
+| Final eval KL (sequence-level) | `-3.4576` |
 | Peak GPU memory | `13.9383 GB` |
 
 ## Training Curves
 
 <p align="center">
-  <img src="artifacts/training_metrics/2026-04-11-llama3_8b_instruct_dpo_qlora/plots/loss_curve.png" width="49%" alt="Loss curve">
-  <img src="artifacts/training_metrics/2026-04-11-llama3_8b_instruct_dpo_qlora/plots/reward_metrics.png" width="49%" alt="Reward metrics">
+  <img src="artifacts/training_metrics/2026-04-17-argilla_dpo_mix_simpo_kl/plots/loss_curve.png" width="49%" alt="Loss curve">
+  <img src="artifacts/training_metrics/2026-04-17-argilla_dpo_mix_simpo_kl/plots/reward_metrics.png" width="49%" alt="Reward metrics">
 </p>
 
 <p align="center">
-  <img src="artifacts/training_metrics/2026-04-11-llama3_8b_instruct_dpo_qlora/plots/response_length_metrics.png" width="49%" alt="Response length metrics">
-  <img src="artifacts/training_metrics/2026-04-11-llama3_8b_instruct_dpo_qlora/plots/adaptive_margin_metrics.png" width="49%" alt="Adaptive margin metrics">
+  <img src="artifacts/training_metrics/2026-04-17-argilla_dpo_mix_simpo_kl/plots/response_length_metrics.png" width="49%" alt="Response length metrics">
+  <img src="artifacts/training_metrics/2026-04-17-argilla_dpo_mix_simpo_kl/plots/adaptive_margin_metrics.png" width="49%" alt="Adaptive margin metrics">
 </p>
 
 <p align="center">
-  <img src="artifacts/training_metrics/2026-04-11-llama3_8b_instruct_dpo_qlora/plots/runtime_memory_metrics.png" width="70%" alt="Runtime and memory metrics">
+  <img src="artifacts/training_metrics/2026-04-17-argilla_dpo_mix_simpo_kl/plots/runtime_memory_metrics.png" width="49%" alt="Runtime and memory metrics">
+  <img src="artifacts/training_metrics/2026-04-17-argilla_dpo_mix_simpo_kl/plots/kl_metrics.png" width="49%" alt="KL metrics">
 </p>
 
 ## Common Issues
