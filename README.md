@@ -32,12 +32,16 @@ SimPOextension: Development of the Adaptive Margin SimPO, including the sigmoid-
 
 ## Metrics:
 Win Rate (LLM-as-a-Judge)
+
 Response Length Analysis
+
 Training Efficiency (VRAM, throughput)
 
 ## Models & Data
 Base Model: LLaMA-3-8B / Mistral-7B
+
 Dataset: UltraFeedback (subset)
+
 Method: QLoRA (4-bit)
 
 ## 👥 Team
