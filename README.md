@@ -45,12 +45,12 @@ Dataset: UltraFeedback (subset)
 Method: QLoRA (4-bit)
 
 ## 👥 Team
-Yang Lujianing
-Zhao Yiming
-Gao Qiman
-Su Siying
-Tang Zijun
-Cao Zhizhou
+Yang Lujianing / 
+Zhao Yiming / 
+Gao Qiman / 
+Su Siying / 
+Tang Zijun / 
+Cao Zhizhou / 
 Yan Junjie
 
 ## References
